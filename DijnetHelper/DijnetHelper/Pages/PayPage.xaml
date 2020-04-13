@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             xmlns:converter="clr-namespace:DijnetHelper.Converters;assembly=DijnetHelper"
+             xmlns:model="clr-namespace:DijnetHelper.Model;assembly=DijnetHelper"
+             xmlns:viewModels="clr-namespace:DijnetHelper.ViewModels;assembly=DijnetHelper"
+             x:Class="DijnetHelper.Pages.PayPage"
+             Title="{Binding Path=Bill.ProviderId}">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:PriceConverter x:Key="PriceConverter" />
+            <converter:NotEmptyConverter x:Key="NotEmptyConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.BindingContext>
+        <viewModels:PayViewModel x:Name="ViewModel" />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <StackLayout Padding="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" VerticalTextAlignment="Center" Text="Provider" />
+                <Label Grid.Row="1" Grid.Column="0" VerticalTextAlignment="Center" Text="Provider ID" />
+                <Label Grid.Row="2" Grid.Column="0" VerticalTextAlignment="Center" Text="Bill ID" />
+                <Label Grid.Row="3" Grid.Column="0" VerticalTextAlignment="Center" Text="Issue Date" />
+                <Label Grid.Row="4" Grid.Column="0" VerticalTextAlignment="Center" Text="Total Price" />
+                <Label Grid.Row="5" Grid.Column="0" VerticalTextAlignment="Center" Text="Due Date" />
+                <Label Grid.Row="6" Grid.Column="0" VerticalTextAlignment="Center" Text="Price To Pay" />
+
+                <Label Grid.Row="0" Grid.Column="1" VerticalTextAlignment="Center" Text="{Binding Path=Bill.Provider}" />
+                <Label Grid.Row="1" Grid.Column="1" VerticalTextAlignment="Center" Text="{Binding Path=Bill.ProviderId}" />
+                <Label Grid.Row="2" Grid.Column="1" VerticalTextAlignment="Center" Text="{Binding Path=Bill.Id}" />
+                <Label Grid.Row="3" Grid.Column="1" VerticalTextAlignment="Center" Text="{Binding Path=Bill.IssueDate, StringFormat='{0:yyyy.MM.dd}'}" />
+                <Label Grid.Row="4" Grid.Column="1" VerticalTextAlignment="Center" Text="{Binding Path=Bill.TotalPrice, Converter={StaticResource PriceConverter}}" />
+                <Label Grid.Row="5" Grid.Column="1" VerticalTextAlignment="Center" Text="{Binding Path=Bill.DueDate, StringFormat='{0:yyyy.MM.dd}'}" />
+                <Label Grid.Row="6" Grid.Column="1" VerticalTextAlignment="Center" Text="{Binding Path=Bill.PriceToPay, Converter={StaticResource PriceConverter}}" />
+            </Grid>
+
+            <Grid Margin="10" HorizontalOptions="CenterAndExpand" IsVisible="{Binding Cards, Converter={StaticResource NotEmptyConverter}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" Text="Select card:" VerticalTextAlignment="Center" />
+                <Picker Grid.Row="0" Grid.Column="1" ItemsSource="{Binding Cards}" SelectedItem="{Binding SelectedCard, Mode=TwoWay}" ItemDisplayBinding="{Binding Name}" IsEnabled="{Binding CanPay}" SelectedIndexChanged="PickerCards_OnSelectedIndexChanged" WidthRequest="150" />
+                <Button Grid.Row="0" Grid.Column="2" Margin="10,0" Text="Pay" HorizontalOptions="Start" IsEnabled="{Binding CanPay}" Clicked="ButtonPay_OnClicked" />
+            </Grid>
+
+            <Label Text="{Binding Status}" IsVisible="{Binding Status, Converter={StaticResource NotEmptyConverter}}" HorizontalOptions="CenterAndExpand" Margin="0,10" FontSize="Large" />
+            <Label Text="{Binding StatusDetail}" IsVisible="{Binding StatusDetail, Converter={StaticResource NotEmptyConverter}}" HorizontalOptions="CenterAndExpand" />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

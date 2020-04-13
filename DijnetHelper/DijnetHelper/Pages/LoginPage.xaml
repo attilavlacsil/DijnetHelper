@@ -1,0 +1,75 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:view="clr-namespace:DijnetHelper.Views;assembly=DijnetHelper"
+             mc:Ignorable="d"
+             xmlns:converter="clr-namespace:DijnetHelper.Converters;assembly=DijnetHelper"
+             xmlns:viewModels="clr-namespace:DijnetHelper.ViewModels;assembly=DijnetHelper"
+             x:Class="DijnetHelper.Pages.LoginPage"
+             Title="Dijnet Helper">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:NotEmptyConverter x:Key="NotEmptyConverter" />
+            <converter:BoolNegateConverter x:Key="BoolNegateConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.BindingContext>
+        <viewModels:LoginViewModel x:Name="ViewModel" />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Content>
+        <StackLayout>
+            <!-- Hidden WebView to operate in the background -->
+            <view:CookieWebView x:Name="WebView" IsVisible="false" />
+
+            <StackLayout IsVisible="{Binding IsManualLogin}" Margin="0,0,0,20">
+                <Label Text="Login to Dijnet" HorizontalOptions="CenterAndExpand" Margin="0,40,0,0" FontSize="Large" FontAttributes="Bold" />
+
+                <Grid Margin="10" ColumnSpacing="10" HorizontalOptions="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="200" />
+                    </Grid.ColumnDefinitions>
+
+                    <Label Grid.Row="0" Grid.Column="0" Text="Username:" VerticalTextAlignment="Center" />
+                    <Label Grid.Row="1" Grid.Column="0" Text="Password:" VerticalTextAlignment="Center" />
+
+                    <Entry Grid.Row="0" Grid.Column="1" Text="{Binding UserName, Mode=TwoWay}" IsEnabled="{Binding IsLoggingIn, Converter={StaticResource BoolNegateConverter}}" />
+                    <Entry Grid.Row="1" Grid.Column="1" IsPassword="True" Text="{Binding Password, Mode=TwoWay}" IsEnabled="{Binding IsLoggingIn, Converter={StaticResource BoolNegateConverter}}" />
+                </Grid>
+                <Grid Margin="10" ColumnSpacing="10" HorizontalOptions="Center">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <StackLayout Grid.Row="0" Grid.Column="0" Orientation="Horizontal" HorizontalOptions="Center">
+                        <CheckBox IsChecked="{Binding Remember, Mode=TwoWay}" IsEnabled="{Binding IsLoggingIn, Converter={StaticResource BoolNegateConverter}}" />
+                        <Label Text="Remember" VerticalTextAlignment="Center"/>
+                    </StackLayout>
+                    <StackLayout Grid.Row="0" Grid.Column="1" Orientation="Horizontal" HorizontalOptions="Center">
+                        <CheckBox IsChecked="{Binding AutoLogin, Mode=TwoWay}" IsEnabled="{Binding IsLoggingIn, Converter={StaticResource BoolNegateConverter}}" />
+                        <Label Text="Auto-login" VerticalTextAlignment="Center"/>
+                    </StackLayout>
+                    <Button Grid.Row="0" Grid.Column="2" Text="Login" IsEnabled="{Binding CanLogIn}" Clicked="ButtonLogin_OnClicked" />
+                </Grid>
+            </StackLayout>
+
+            <Label Text="{Binding Status}" IsVisible="{Binding Status, Converter={StaticResource NotEmptyConverter}}" HorizontalOptions="CenterAndExpand" Margin="10" FontSize="Large" />
+            <Label Text="{Binding StatusDetail}" IsVisible="{Binding StatusDetail, Converter={StaticResource NotEmptyConverter}}" HorizontalOptions="CenterAndExpand" />
+
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

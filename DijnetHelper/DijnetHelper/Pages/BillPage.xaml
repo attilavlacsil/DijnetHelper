@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:model="clr-namespace:DijnetHelper.Model;assembly=DijnetHelper"
+             xmlns:viewModel="clr-namespace:DijnetHelper.ViewModels;assembly=DijnetHelper"
+             xmlns:converter="clr-namespace:DijnetHelper.Converters;assembly=DijnetHelper"
+             mc:Ignorable="d"
+             x:Class="DijnetHelper.Pages.BillPage"
+             x:Name="Page"
+             Title="Bills">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:NotEmptyConverter x:Key="NotEmptyConverter" />
+            <converter:PriceConverter x:Key="PriceConverter" />
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <ContentPage.BindingContext>
+        <viewModel:BillViewModel x:Name="ViewModel" />
+    </ContentPage.BindingContext>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Logout" Order="Primary" Priority="0" Command="{Binding LogoutCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <ContentPage.Content>
+        <StackLayout Padding="10">
+            <!-- Hidden WebView to operate in the background -->
+            <!--<view:CookieWebView x:Name="WebView" IsVisible="False" />-->
+
+            <Label Text="{Binding Status}" IsVisible="{Binding Status, Converter={StaticResource NotEmptyConverter}}" Margin="10" FontAttributes="Bold" />
+
+            <ListView SelectionMode="None" ItemsSource="{Binding Bills}"
+                      IsPullToRefreshEnabled="{Binding IsEnabled}" RefreshCommand="{Binding BillRefreshCommand}" IsRefreshing="{Binding IsRefreshing}">
+                <ListView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Bill">
+                        <ViewCell>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <Label Grid.Row="0" Grid.Column="0" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Text="{Binding ProviderId}" />
+                                <Label Grid.Row="0" Grid.Column="1" VerticalTextAlignment="Center" HorizontalTextAlignment="Start" Text="{Binding DueDate, StringFormat='{0:yyyy.MM.dd}'}" />
+                                <Label Grid.Row="0" Grid.Column="2" VerticalTextAlignment="Center" HorizontalTextAlignment="End" Text="{Binding PriceToPay, Converter={StaticResource PriceConverter}}" />
+                                <Button Grid.Row="0" Grid.Column="3" Margin="5,0" VerticalOptions="Center" Text="Pay" IsEnabled="{Binding IsEnabled, Source={x:Reference ViewModel}}" Clicked="ButtonPay_OnClicked" CommandParameter="{Binding .}" />
+                            </Grid>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+        </StackLayout>
+    </ContentPage.Content>
+
+</ContentPage>
