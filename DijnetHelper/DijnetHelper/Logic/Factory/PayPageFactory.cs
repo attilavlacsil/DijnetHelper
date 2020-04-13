@@ -1,7 +1,7 @@
-﻿using DijnetHelper.Model;
-using DijnetHelper.Pages;
+﻿using DijnetHelper.Pages;
 using Unity;
 using Unity.Resolution;
+using Bill = DijnetHelper.Logic.Model.Bill;
 
 namespace DijnetHelper.Logic.Factory
 {
