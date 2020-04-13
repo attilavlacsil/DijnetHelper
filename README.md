@@ -26,6 +26,8 @@ The iOS implementation is done, including the [App Store requirement](https://do
 
 You may need to log in to dijnet on a regular browser and set the page language to Hungarian.
 
+You can test with fake dependencies by setting `FAKE_AUTH` and `FAKE_BROWSER` symbols.
+
 ## Implementation
 
 User interaction is simulated by a hidden [Xamarin.Forms WebView](https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/webview), which extended to support injection of cookies. Once authentication cookies have been injected, the web page is manipulated by Javascript calls to the WebView.
