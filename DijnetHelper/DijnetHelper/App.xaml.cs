@@ -1,5 +1,4 @@
-﻿using System.Text;
-using Xamarin.Forms;
+﻿using Xamarin.Forms;
 
 namespace DijnetHelper
 {
@@ -7,9 +6,6 @@ namespace DijnetHelper
     {
         public App(Page startPage)
         {
-            // required to handle HTML encoding
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-
             InitializeComponent();
 
             MainPage = new NavigationPage(startPage);

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using DijnetHelper.Logic.Model;
@@ -23,6 +24,12 @@ namespace DijnetHelper.Logic
         private readonly WebView webView;
         private readonly string mainUrl;
         private readonly AsyncResult<WebNavigationResult> webNavigationResult;
+
+        static DijnetBrowser()
+        {
+            // required to handle HTML encoding
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+        }
 
         public DijnetBrowser(WebView webView, string mainUrlPath)
         {
