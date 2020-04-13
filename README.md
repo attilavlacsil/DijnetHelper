@@ -13,6 +13,16 @@ This project is a Proof of Concept for paying dijnet bills by **already register
 * Initiate the payment of an unpaid bill by a registered card
 * Store credentials (securely) and auto-login at startup
 
+## Preview
+
+<div>
+  <img src="/preview/Android/1-login.png" width="120px" />
+  <img src="/preview/Android/2-billpage.png" width="120px" />
+  <img src="/preview/Android/3-billpage.png" width="120px" />
+  <img src="/preview/Android/4-paypage.png" width="120px" />
+  <img src="/preview/Android/5-paypage.png" width="120px" />
+</div>
+
 ## Build and test
 
 Download or clone the repository, open the solution, build and deploy to your platform.
