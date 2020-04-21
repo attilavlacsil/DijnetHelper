@@ -9,10 +9,9 @@ namespace DijnetHelper.ViewModels
         private Bill bill;
         private List<Card> cards;
         private Card selectedCard;
-        private bool isPaying;
         private string status;
-        private bool isPaid;
         private string statusDetail;
+        private bool isPaymentStarted;
 
         public PayViewModel()
         {
@@ -37,16 +36,10 @@ namespace DijnetHelper.ViewModels
             set => SetProperty(ref selectedCard, value);
         }
 
-        public bool IsPaying
+        public bool IsPaymentStarted
         {
-            get => isPaying;
-            set => SetProperty(ref isPaying, value, onChanged: () => OnPropertyChanged(nameof(CanPay)));
-        }
-
-        public bool IsPaid
-        {
-            get => isPaid;
-            set => SetProperty(ref isPaid, value, onChanged: () => OnPropertyChanged(nameof(CanPay)));
+            get => isPaymentStarted;
+            set => SetProperty(ref isPaymentStarted, value, onChanged: () => OnPropertyChanged(nameof(CanPay)));
         }
 
         public string Status
@@ -61,6 +54,6 @@ namespace DijnetHelper.ViewModels
             set => SetProperty(ref statusDetail, value);
         }
 
-        public bool CanPay => Cards.Count > 0 && !IsPaying && !IsPaid;
+        public bool CanPay => Cards.Count > 0 && !IsPaymentStarted;
     }
 }

@@ -44,22 +44,26 @@ namespace DijnetHelper.Pages
 
         private async void ButtonPay_OnClicked(object sender, EventArgs e)
         {
-            ViewModel.IsPaying = true;
+            ViewModel.IsPaymentStarted = true;
             ViewModel.Status = "Paying...";
 
             Card selectedCard = ViewModel.SelectedCard;
 
             PayResult result = await browser.PayBillAsync(selectedCard);
 
+            // indicate that payment was attempted
+            ViewModel.Bill.Status = BillStatus.Paid;
+
             if (result.Success)
             {
-                ViewModel.Bill.Status = BillStatus.Paid;
+                ViewModel.Status = "Done!";
+                ViewModel.StatusDetail = null;
             }
-
-            ViewModel.IsPaid = result.Success;
-            ViewModel.Status = result.Success ? "Done!" : "Failed!";
-            ViewModel.StatusDetail = result.Error;
-            ViewModel.IsPaying = false;
+            else
+            {
+                ViewModel.Status = "Failed!";
+                ViewModel.StatusDetail = result.Error;
+            }
         }
 
         private void PickerCards_OnSelectedIndexChanged(object sender, EventArgs e)
