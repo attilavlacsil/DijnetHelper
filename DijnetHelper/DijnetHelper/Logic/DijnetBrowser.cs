@@ -112,18 +112,20 @@ namespace DijnetHelper.Logic
                 return result;
             }
 
-            // TODO check for error, and return detail
+            string checkScript = "$.makeArray($(\"h2\").map(function() { return $(this).text().trim(); }))";
+            List<string> resultTexts = await EvaluateAndDeserializeAsync<List<string>>(target, checkScript);
 
             string checkPivot = "A tranzakció sikeres volt.";
-            string checkScript = $"$('h2:contains(\"{checkPivot}\")').length > 0";
-            bool resultSuccess = await EvaluateAndDeserializeAsync<bool>(target, checkScript);
-
-            result.Success = resultSuccess;
-            if (!resultSuccess)
+            if (resultTexts.Contains(checkPivot))
+            {
+                result.Success = true;
+            }
+            else
             {
                 // TODO log
 
-                result.Error = "Payment failed!";
+                string errorDetail = string.Join("; ", resultTexts);
+                result.Error = $"Payment failed: {errorDetail}";
             }
 
             return result;
