@@ -46,16 +46,6 @@ The logic expects that the webpage is displayed in Hungarian.
 
 [Xamarin.Essentials Secure Storage](https://docs.microsoft.com/en-us/xamarin/essentials/secure-storage) is used to store credentials securely, if requested. No other data is stored.
 
-## TODOs
-
-* Shared components testing
-* iOS testing
-* Logging
-* Localization
-* Improve checking of payment error
-* Improve mapping of received data
-* Improve converters
-
 ## License
 
 However the source code is licensed under the [MIT license](LICENSE), all rights of dijnet system reserved to _Díjnet Zrt._
